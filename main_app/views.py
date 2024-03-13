@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic.edit import CreateView
 
 # Import the Book Model
 from .models import Book
@@ -21,3 +22,7 @@ def books_index(request):
 def books_detail(request, book_id):
     book = Book.objects.get(id=book_id)
     return render(request, 'books/detail.html', { 'book': book })
+
+class BookCreate(CreateView):
+    model = Book
+    fields = '__all__'
