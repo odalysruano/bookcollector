@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 class Book(models.Model):
@@ -13,4 +14,17 @@ class Book(models.Model):
     
     def get_absolute_url(self):
         return reverse('detail', kwargs={'book_id': self.id})
+
+class Review(models.Model):
+    date = models.DateField('Date Finished')
+    rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    review = models.CharField(max_length=250)
+
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f" A {self.rating} star rating on {self.date}!"
+    
+    class Meta:
+        ordering = ['-date']
     
