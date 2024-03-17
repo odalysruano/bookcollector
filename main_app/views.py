@@ -46,3 +46,11 @@ class BookUpdate(UpdateView):
 class BookDelete(DeleteView):
     model = Book
     success_url = '/books'        
+
+def assoc_genre(request, book_id, genre_id):
+    Book.objects.get(id=book_id).genre.add(genre_id)
+    return redirect('detail', book_id=book_id)
+
+def unassoc_genre(request, book_id, genre_id):
+    Book.objects.get(id=book_id).genre.remove(genre_id)
+    return redirect('detail', book_id=book_id)
