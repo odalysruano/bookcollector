@@ -9,6 +9,9 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.type
+    
+    def get_absolute_url(self):
+        return reverse('genres_detail', kwargs={'pk': self.id})
 
 class Book(models.Model):
     title = models.CharField(max_length=100)
@@ -16,7 +19,7 @@ class Book(models.Model):
     description = models.TextField(max_length=250)
     year_published = models.IntegerField()
 
-    genre = models.ManyToManyField(Genre)
+    genres = models.ManyToManyField(Genre)
 
     def __str__(self):
         return self.title
