@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Import models
-from .models import Book
+from .models import Book, Genre
 from .forms import ReviewForm
 
 # Create your views here.
@@ -22,8 +22,10 @@ def books_index(request):
 
 def books_detail(request, book_id):
     book = Book.objects.get(id=book_id)
+    id_list = book.genres.all().values_list('id')
+    genres_book_doesnt_have = Genre.objects.exclude(id_in=id_list)
     review_form = ReviewForm()
-    return render(request, 'books/detail.html', { 'book': book, 'review_form': review_form })
+    return render(request, 'books/detail.html', { 'book': book, 'review_form': review_form, 'genre': genres_book_doesnt_have })
 
 def add_review(request, book_id):
     form = ReviewForm(request.POST)
